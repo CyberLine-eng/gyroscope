@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080817">
+<title>Immersive World — 3D / VR / Cinema</title>
+<style>
+:root{--bg:#070711;--panel:#111126;--line:#29294d;--cyan:#52f5ff;--pink:#ff48d1;--text:#f5f4ff;--muted:#aaa9c8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% 0,#20204b 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 system-ui,Segoe UI,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(14px,4vw,42px);background:#09091add;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.brand{font-weight:900;letter-spacing:.08em}
+.brand b{color:var(--cyan);text-shadow:0 0 16px #52f5ff88}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+.btn,button{border:1px solid #41416b;background:#17172e;color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font:inherit}
+button:hover,.btn:hover{border-color:var(--cyan);box-shadow:0 0 18px #52f5ff33}
+button.primary{background:linear-gradient(100deg,#086e83,#54256f);border-color:#6af5ff}
+main{max-width:1250px;margin:auto;padding:28px clamp(14px,4vw,42px) 60px}
+.hero{padding:clamp(24px,5vw,54px);border:1px solid #34345e;border-radius:26px;background:linear-gradient(120deg,#171735dd,#101020dd);box-shadow:0 20px 70px #0008;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-80px;top:-100px;background:#ff48d144;filter:blur(55px)}
+.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:.18em;font-size:12px}
+h1{font-size:clamp(32px,6vw,64px);line-height:1.02;margin:12px 0}
+h1 span{color:var(--cyan);text-shadow:0 0 22px #52f5ff66}
+.sub{color:var(--muted);max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;margin:22px 0}
+.card{background:linear-gradient(145deg,#17172f,#0e0e1d);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+.card h3{margin:0 0 6px}
+.card p{color:var(--muted);margin:0 0 14px;font-size:14px}
+section{margin-top:30px}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+h2{margin:0;font-size:24px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+input[type=file],input[type=text],select{max-width:100%;background:#0b0b1b;color:var(--text);border:1px solid var(--line);padding:10px;border-radius:10px}
+.viewer{width:100%;height:min(65vh,560px);min-height:280px;background:#02020a;border:1px solid #34345e;border-radius:18px;overflow:hidden;position:relative}
+.viewer canvas{display:block;width:100%;height:100%}
+.hint{color:var(--muted);font-size:13px}
+video{width:100%;max-height:65vh;background:#000;border-radius:14px}
+.theater{background:#020207;padding:clamp(8px,3vw,28px);border:1px solid #34345e;border-radius:20px;box-shadow:0 0 35px #52f5ff18}
+.theater video{max-height:75vh}
+#status{color:var(--cyan);font-size:13px;min-height:20px}
+footer{padding:25px;text-align:center;color:var(--muted);border-top:1px solid var(--line)}
+.small{font-size:12px;color:var(--muted)}
+.pill{display:inline-block;border:1px solid #45456e;border-radius:99px;padding:4px 9px;color:#c8c7e8;font-size:12px;margin:3px}
+@media(max-width:600px){
+header{align-items:flex-start;flex-direction:column}
+nav{width:100%}
+nav button{flex:1}
+.viewer{min-height:250px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">✦ <b>IMMERSIVE</b> WORLD</div>
+  <nav>
+    <button onclick="go('experience')">3D / VR</button>
+    <button onclick="go('cinema')">Cinema</button>
+    <button onclick="go('arcade')">3D Game</button>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">ONE WEB EXPERIENCE · MANY SCREENS</div>
+    <h1>ENTER THE <span>IMMERSIVE</span><br>WORLD.</h1>
+    <p class="sub">A responsive starter website for 2D video, 180° / 360° viewing, interactive 3D scenes, theatre mode and supported VR headsets.</p>
+    <div class="controls">
+      <button class="primary" onclick="go('experience')">Explore 3D world ↗</button>
+      <span class="pill">Mobile</span>
+      <span class="pill">Tablet</span>
+      <span class="pill">Laptop</span>
+      <span class="pill">VR-ready where supported</span>
+    </div>
+  </div>
+
+  <section id="experience">
+    <div class="section-title">
+      <h2>01 / 3D & VR Experience</h2>
+      <span class="pill">Three.js</span>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🌌 Interactive 3D World</h3>
+        <p>Drag to look around. Select a scene mode below.</p>
+        <div class="controls">
+          <button onclick="setScene('world')">3D World</button>
+          <button onclick="setScene('180')">180° View</button>
+          <button onclick="setScene('360')">360° View</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📱 Motion & Headset</h3>
+        <p>Gyroscope is optional. Touch and mouse controls remain available.</p>
+        <div class="controls">
+          <button class="primary" onclick="enableGyro()">Enable Gyroscope</button>
+          <button onclick="enterVR()">Enter VR</button>
+        </div>
+        <div id="status">Ready. Gyroscope permission may be requested by your browser.</div>
+      </div>
+    </div>
+
+    <div class="viewer" id="three-view"></div>
+    <p class="hint">Controls: drag / touch to look around. For motion control, press “Enable Gyroscope” and allow sensor access. WebXR VR needs a compatible headset, browser and HTTPS.</p>
+  </section>
+
+  <section id="cinema">
+    <div class="section-title">
+      <h2>02 / 2D Cinema Theatre</h2>
+      <span class="pill">Theatre mode</span>
+    </div>
+
+    <div class="theater">
+      <video id="flatVideo" controls playsinline preload="metadata">
+        <source src="" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+
+      <div class="controls">
+        <label class="btn">Choose video
+          <input id="flatFile" type="file" accept="video/*" hidden>
+        </label>
+        <button onclick="toggleTheatre()">Toggle Theatre View</button>
+      </div>
+
+      <p class="small">Choose a video file from your device. The sample site does not include copyrighted films or hosted videos.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <h2>03 / 180° & 360° Video</h2>
+      <span class="pill">Immersive video</span>
+    </div>
+
+    <div class="card">
+      <p>Load your own panoramic 180° / 360° video. Use an equirectangular video (commonly 2:1 for 360°). The viewer maps it inside a sphere.</p>
+
+      <div class="controls">
+        <label class="btn">Choose 360° video
+          <input id="panoFile" type="file" accept="video/*" hidden>
+        </label>
+        <button onclick="playPano()">Play / Pause</button>
+      </div>
+
+      <video id="panoSource" playsinline loop muted style="display:none"></video>
+      <div class="viewer" id="pano-view"></div>
+      <p class="hint">For a real 180° video, use a correctly formatted 180° panoramic source. This starter provides the full-sphere 360° projection; 180° media may need a dedicated half-sphere mapping based on its format.</p>
+    </div>
+  </section>
+
+  <section id="arcade">
+    <div class="section-title">
+      <h2>04 / Mini 3D Arcade</h2>
+      <span class="pill">Starter game</span>
+    </div>
+
+    <div class="card">
+      <p>Tap or click the glowing targets in the 3D scene. This is a small demo that you can expand into a full game.</p>
+
+      <div class="controls">
+        <button class="primary" onclick="startGame()">Start / Reset Game</button>
+        <strong id="score">Score: 0</strong>
+      </div>
+
+      <div class="viewer" id="game-view"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">
+      <h2>05 / Device Compatibility</h2>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>📱 Phones</h3>
+        <p>Responsive layout; touch controls work without a gyroscope.</p>
+      </div>
+
+      <div class="card">
+        <h3>💻 Laptops</h3>
+        <p>Mouse and keyboard-friendly controls.</p>
+      </div>
+
+      <div class="card">
+        <h3>🥽 VR headsets</h3>
+        <p>WebXR entry appears only when the browser and headset support immersive VR.</p>
+      </div>
+    </div>
+
+    <p class="hint">No website can guarantee every feature on every device. Unsupported sensors and VR modes fall back to touch or mouse. Serve this site over HTTPS for sensor and WebXR features.</p>
+  </section>
+</main>
+
+<footer>IMMERSIVE WORLD · Responsive 3D / VR / Cinema starter</footer>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { VRButton } from 'three/addons/webxr/VRButton.js';
+
+const statusEl = document.getElementById('status');
+
+function say(s) {
+  statusEl.textContent = s;
+}
+
+function makeScene(host, background = 0x050511) {
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(background);
+
+  const camera = new THREE.PerspectiveCamera(
+    70,
+    host.clientWidth / host.clientHeight,
+    0.1,
+    1000
+  );
+
+  camera.position.set(0, 0, 5);
+
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: false
+  });
+
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(host.clientWidth, host.clientHeight);
+  renderer.xr.enabled = true;
+  host.replaceChildren(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+
+  const light = new THREE.PointLight(0x55eeff, 35);
+  light.position.set(3, 4, 5);
+  scene.add(light);
+
+  let down = false;
+  let px = 0;
+  let py = 0;
+  let lon = 0;
+  let lat = 0;
+
+  const el = renderer.domElement;
+
+  el.addEventListener('pointerdown', e => {
+    down = true;
+    px = e.clientX;
+    py = e.clientY;
+    el.setPointerCapture(e.pointerId);
+  });
+
+  el.addEventListener('pointerup', () => down = false);
+
+  el.addEventListener('pointermove', e => {
+    if (!down) return;
+
+    lon -= (e.clientX - px) * 0.25;
+    lat += (e.clientY - py) * 0.25;
+
+    lat = Math.max(-85, Math.min(85, lat));
+
+    px = e.clientX;
+    py = e.clientY;
+  });
+
+  const resize = () => {
+    let w = host.clientWidth;
+    let h = host.clientHeight;
+
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  };
+
+  new ResizeObserver(resize).observe(host);
+
+  function updateLook() {
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y = THREE.MathUtils.degToRad(lon);
+    camera.rotation.x = THREE.MathUtils.degToRad(lat);
+  }
+
+  return {
+    scene,
+    camera,
+    renderer,
+    updateLook,
+
+    get lon() {
+      return lon;
+    },
+
+    set lon(v) {
+      lon = v;
+    },
+
+    get lat() {
+      return lat;
+    },
+
+    set lat(v) {
+      lat = v;
+    }
+  };
+}
+
+const host = document.getElementById('three-view');
+const main = makeScene(host);
+
+const world = new THREE.Group();
+main.scene.add(world);
+
+const knot = new THREE.Mesh(
+  new THREE.TorusKnotGeometry(1, 0.28, 180, 24),
+  new THREE.MeshStandardMaterial({
+    color: 0x55efff,
+    metalness: 0.7,
+    roughness: 0.2,
+    emissive: 0x123344
+  })
+);
+
+world.add(knot);
+
+const ring = new THREE.Mesh(
+  new THREE.TorusGeometry(2, 0.025, 12, 100),
+  new THREE.MeshBasicMaterial({
+    color: 0xff48d1
+  })
+);
+
+world.add(ring);
+
+for (let i = 0; i < 90; i++) {
+  let m = new THREE.Mesh(
+    new THREE.SphereGeometry(0.025, 8, 8),
+    new THREE.MeshBasicMaterial({
+      color: i % 2 ? 0x55efff : 0xff48d1
+    })
+  );
+
+  m.position.set(
+    (Math.random() - 0.5) * 18,
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 12
+  );
+
+  world.add(m);
+}
+
+let panoTexture = null;
+let panoMesh = null;
+
+function setScene(mode) {
+  if (panoMesh) {
+    main.scene.remove(panoMesh);
+    panoMesh = null;
+  }
+
+  world.visible = mode === 'world';
+
+  if (mode !== 'world') {
+    const video = document.getElementById('panoSource');
+
+    if (video.src) {
+      panoTexture = new THREE.VideoTexture(video);
+      panoTexture.colorSpace = THREE.SRGBColorSpace;
+
+      const geo = new THREE.SphereGeometry(45, 64, 40);
+      geo.scale(-1, 1, 1);
+
+      panoMesh = new THREE.Mesh(
+        geo,
+        new THREE.MeshBasicMaterial({
+          map: panoTexture
+        })
+      );
+    } else {
+      const geo = new THREE.SphereGeometry(45, 64, 40);
+      geo.scale(-1, 1, 1);
+
+      const mat = new THREE.MeshBasicMaterial({
+        color: mode === '180' ? 0x222244 : 0x111133,
+        wireframe: true
+      });
+
+      panoMesh = new THREE.Mesh(geo, mat);
+    }
+
+    main.scene.add(panoMesh);
+
+    if (mode === '180') {
+      main.camera.fov = 90;
+    } else {
+      main.camera.fov = 70;
+    }
+
+    main.camera.updateProjectionMatrix();
+
+  } else {
+    main.camera.fov = 70;
+    main.camera.updateProjectionMatrix();
+  }
+}
+
+window.setScene = setScene;
+
+function animate() {
+  main.updateLook();
+
+  if (world.visible) {
+    knot.rotation.x += 0.003;
+    knot.rotation.y += 0.006;
+    ring.rotation.z -= 0.002;
+  }
+
+  main.renderer.render(main.scene, main.camera);
+}
+
+main.renderer.setAnimationLoop(animate);
+
+window.go = id => {
+  document.getElementById(id).scrollIntoView({
+    behavior: 'smooth'
+  });
+};
+
+window.enableGyro = async () => {
+  if (!('DeviceOrientationEvent' in window)) {
+    say('This device/browser has no orientation sensor. Touch controls are ready.');
+    return;
+  }
+
+  try {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      const p = await DeviceOrientationEvent.requestPermission();
+
+      if (p !== 'granted') {
+        say('Sensor permission not granted. Use touch controls.');
+        return;
+      }
+    }
+
+    window.addEventListener('deviceorientation', e => {
+      if (e.alpha == null) return;
+
+      main.lon = e.alpha;
+      main.lat = Math.max(-80, Math.min(80, (e.beta || 0) - 45));
+    }, true);
+
+    say('Gyroscope enabled. Move your phone to look around.');
+
+  } catch (e) {
+    say('Gyroscope unavailable here. Touch controls are ready.');
+  }
+};
+
+window.enterVR = async () => {
+  if (!navigator.xr) {
+    say('WebXR is not available in this browser. Use 360° touch mode or a compatible VR browser/headset.');
+    return;
+  }
+
+  try {
+    const ok = await navigator.xr.isSessionSupported('immersive-vr');
+
+    if (!ok) {
+      say('This device/browser does not report immersive VR support.');
+      return;
+    }
+
+    const b = VRButton.createButton(main.renderer);
+    b.click();
+
+    say('Starting VR session…');
+
+  } catch (e) {
+    say('Could not start VR. Check HTTPS, browser and headset support.');
+  }
+};
+
+document.getElementById('flatFile').addEventListener('change', e => {
+  let f = e.target.files[0];
+
+  if (f) {
+    let v = document.getElementById('flatVideo');
+    v.src = URL.createObjectURL(f);
+    v.play().catch(() => {});
+  }
+});
+
+window.toggleTheatre = () => {
+  let el = document.querySelector('.theater');
+
+  if (!document.fullscreenElement) {
+    el.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+};
+
+const pano = document.getElementById('panoSource');
+
+document.getElementById('panoFile').addEventListener('change', e => {
+  let f = e.target.files[0];
+
+  if (f) {
+    pano.src = URL.createObjectURL(f);
+    pano.load();
+    setScene('360');
+    say('Panoramic video loaded. Press Play / Pause.');
+  }
+});
+
+window.playPano = () => {
+  if (!pano.src) {
+    say('Choose a panoramic video first.');
+    return;
+  }
+
+  if (pano.paused) {
+    pano.play().catch(() => say('Tap the video play control if autoplay is blocked.'));
+  } else {
+    pano.pause();
+  }
+};
+
+// Small click-the-target game
+
+const gameHost = document.getElementById('game-view');
+const game = makeScene(gameHost, 0x080817);
+
+const targets = new THREE.Group();
+game.scene.add(targets);
+
+let score = 0;
+
+const ray = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function resetTargets() {
+  targets.clear();
+
+  for (let i = 0; i < 8; i++) {
+    let m = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(0.35, 1),
+      new THREE.MeshStandardMaterial({
+        color: i % 2 ? 0xff48d1 : 0x52f5ff,
+        emissive: i % 2 ? 0x551144 : 0x114455
+      })
+    );
+
+    m.position.set(
+      (Math.random() - 0.5) * 6,
+      (Math.random() - 0.5) * 3,
+      (Math.random() - 0.5) * 3
+    );
+
+    m.userData.target = true;
+    targets.add(m);
+  }
+}
+
+function updateScore() {
+  document.getElementById('score').textContent = 'Score: ' + score;
+}
+
+window.startGame = () => {
+  score = 0;
+  updateScore();
+  resetTargets();
+};
+
+game.renderer.domElement.addEventListener('pointerdown', e => {
+  let r = game.renderer.domElement.getBoundingClientRect();
+
+  mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+
+  ray.setFromCamera(mouse, game.camera);
+
+  let hit = ray.intersectObjects(targets.children)[0];
+
+  if (hit) {
+    targets.remove(hit.object);
+    score++;
+    updateScore();
+
+    if (!targets.children.length) {
+      resetTargets();
+    }
+  }
+});
+
+resetTargets();
+
+game.renderer.setAnimationLoop(() => {
+  game.updateLook();
+
+  targets.children.forEach((o, i) => {
+    o.rotation.x += 0.01 + i * 0.0005;
+    o.rotation.y += 0.012;
+  });
+
+  game.renderer.render(game.scene, game.camera);
+});
+</script>
+
+</body>
+</html>
